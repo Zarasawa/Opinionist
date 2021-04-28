@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
     Comments newComments;
-    Button btnSubmit, btnretrieve;
+    Button btnSubmit, btnretrieve, btndelete;
     TextView viewComment;
     long maxid = 0;
 
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // get xml items
         retComment = (EditText)findViewById(R.id.editRetrieveComment);
         btnretrieve = (Button)findViewById(R.id.button2);
+        btndelete = (Button)findViewById(R.id.button3);
         viewComment = (TextView)findViewById(R.id.textViewComment);
 
         // check when retrieve button is clicked
@@ -91,6 +92,39 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if( snapshot.child(String.valueOf(retComment.getText())).exists() ) { // comment ID exists
                             viewComment.setText(snapshot.child(String.valueOf(retComment.getText())).getValue().toString());
+                        } else { // comment ID does not exists
+                            viewComment.setText("Comment ID does not exist");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+
+
+        /* DELETE AN ITEM */
+        /*  ISSUE:  comment ID can get confusing when deleting a comment from DB. For example,
+                    if you delete comment ID 1 but comment ID 2 exists, we need to find a way
+                    to refill ID 1. Maybe create an array that stores every ID that is empty and check that array when
+                    inserting a new comment before incrementing maxID
+         */
+        // check when retrieve button is clicked
+        btndelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // grab a snapshot of comments array in database
+                reff.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if( snapshot.child(String.valueOf(retComment.getText())).exists() ) { // comment ID exists
+                            snapshot.child(String.valueOf(retComment.getText())).getRef().removeValue();
+                            viewComment.setText("Comment removed");
                         } else { // comment ID does not exists
                             viewComment.setText("Comment ID does not exist");
                         }

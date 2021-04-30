@@ -3,6 +3,7 @@ package com.example.opinionist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,8 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 public class Comments extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
+    FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete;
+    Button btnSubmit, btnretrieve, btndelete, btnLogout;
     TextView viewComment;
     long maxid = 0;
 
@@ -135,6 +138,21 @@ public class Comments extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        // Sign out user
+        btnLogout = findViewById(R.id.buttonMainLogout);
+        mAuth = FirebaseAuth.getInstance();
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( mAuth.getCurrentUser() != null ) {
+                    mAuth.signOut();
+                    startActivity( new Intent(getApplicationContext(), MainActivity.class) );
+                    Toast.makeText(Comments.this, "Logout Successful!",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

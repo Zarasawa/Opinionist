@@ -15,12 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class MainActivity extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
-    Comments newComments;
+    Comment newComment;
     Button btnSubmit, btnretrieve, btndelete;
     TextView viewComment;
     long maxid = 0;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         // get comment from comment textbox
         subComment = (EditText)findViewById(R.id.editComment);
-        newComments = new Comments();
+        newComment = new Comment();
 
         // create new reference to database. all comment instances will fall under 'comments'
         // must be done for submission and retrieval
@@ -64,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newComments.setComment(String.valueOf(subComment.getText()));
-                newComments.setLikes(0);
+                newComment.setComment(String.valueOf(subComment.getText()));
+                newComment.setLikes(0);
 
-                reff.child(String.valueOf(maxid+1)).setValue(newComments);
+                reff.child(String.valueOf(maxid+1)).setValue(newComment);
                 Toast.makeText(MainActivity.this, "Comment inserted successfuly!", Toast.LENGTH_LONG).show();
             }
         });

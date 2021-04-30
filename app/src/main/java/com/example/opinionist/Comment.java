@@ -1,10 +1,10 @@
 package com.example.opinionist;
 
-public class Comments {
+public class Comment {
     private String comment;
     private Integer likes;
 
-    public Comments() {
+    public Comment() {
         likes = 0;
     }
 

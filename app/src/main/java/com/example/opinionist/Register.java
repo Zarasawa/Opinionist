@@ -38,12 +38,7 @@ public class Register extends AppCompatActivity {
         mLogin = findViewById(R.id.textViewLogin);
         mAuth = FirebaseAuth.getInstance();
 
-//        // Make sure user isn't already logged in
-//        if( mAuth.getCurrentUser() != null ) {
-//            // MOVE TO COMMENT PAGE HERE
-//            startActivity( new Intent(getApplicationContext(), MainActivity.class) );
-//            finish();
-//        }
+
 
 
         // add user to firebase authentication server when register button is clicked
@@ -65,6 +60,13 @@ public class Register extends AppCompatActivity {
                 if( password.length() < 6) {
                     mPassword.setError("Password length must be >= 6");
                     return;
+                }
+
+                // Make sure user isn't already logged in
+                if( mAuth.getCurrentUser() != null ) {
+                    // MOVE TO COMMENT PAGE HERE
+                    startActivity( new Intent(getApplicationContext(), MainActivity.class) );
+                    finish();
                 }
 
                 // add user to firebase server

@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 if( mAuth.getCurrentUser() != null ) {
                     mAuth.signOut();
                     btnLogout.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this, "Logout Successful!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

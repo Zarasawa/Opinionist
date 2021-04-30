@@ -23,7 +23,7 @@ public class Comments extends AppCompatActivity {
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete, btnLogout;
+    Button btnSubmit, btnretrieve, btndelete, btnLogout, btnLogoutBypass;
     TextView viewComment;
     long maxid = 0;
 
@@ -153,6 +153,18 @@ public class Comments extends AppCompatActivity {
                     Toast.makeText(Comments.this, "Logout Successful!",
                             Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Toast.makeText(Comments.this, "Error: Not logged in", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // main menu logout bypass
+        btnLogoutBypass = findViewById(R.id.buttonCommentsLogoutBypass);
+        btnLogoutBypass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
     }

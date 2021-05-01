@@ -33,7 +33,6 @@ public class Comments extends AppCompatActivity {
 
     RecyclerView commentRecycler;
     Adapter adapter;
-
     ArrayList<String> items;
 
     @Override
@@ -42,17 +41,11 @@ public class Comments extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
 
         items = new ArrayList<>();
-        items.add("First");
-        items.add("Second");
-        items.add("Third");
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Adapter(this,items);
         commentRecycler.setAdapter(adapter);
-
-
-
 
         commentRecycler = findViewById(R.id.commentRecycler);
 
@@ -84,6 +77,8 @@ public class Comments extends AppCompatActivity {
 
             }
         });
+
+        items.add("First");
 
 
         // Sign out user

@@ -2,9 +2,12 @@ package com.example.opinionist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+import java.util.ArrayList;
+
 public class Comments extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
@@ -27,17 +33,30 @@ public class Comments extends AppCompatActivity {
     TextView viewComment;
     long maxid = 0;
 
+    RecyclerView commentRecycler;
+    Adapter adapter;
+    ArrayList<Comment> topics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+
+        topics = new ArrayList<Comment>();
+
+        commentRecycler = findViewById(R.id.commentRecycler);
+        commentRecycler.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new Adapter(this,topics);
+        commentRecycler.setAdapter(adapter);
+
+        commentRecycler = findViewById(R.id.commentRecycler);
 
         /* SEND COMMENT TO SERVER */
         // check connection to firebase server
         Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
 
         // get comment from comment textbox
-        subComment = (EditText) findViewById(R.id.editComment);
+        //subComment = (EditText) findViewById(R.id.editComment);
         newComment = new Comment();
 
         // create new reference to database. all comment instances will fall under 'comments'
@@ -61,82 +80,22 @@ public class Comments extends AppCompatActivity {
             }
         });
 
-        // send comment to firebase server when button is clicked
-        btnSubmit = (Button) findViewById(R.id.button);
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newComment.setComment(String.valueOf(subComment.getText()));
-                newComment.setLikes(0);
+        //get topic comments and add them to list of topics.
 
-                reff.child(String.valueOf(maxid + 1)).setValue(newComment);
-                Toast.makeText(Comments.this, "Comment inserted successfuly!", Toast.LENGTH_LONG).show();
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Comment comment = child.getValue(Comment.class);
+                    if(comment.getParentid() == -1) {
+                        topics.add(comment);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
-        });
 
-
-
-        /* RETRIEVE DATA */
-        // get xml items
-        retComment = (EditText) findViewById(R.id.editRetrieveComment);
-        btnretrieve = (Button) findViewById(R.id.button2);
-        btndelete = (Button) findViewById(R.id.button3);
-        viewComment = (TextView) findViewById(R.id.textViewComment);
-
-        // check when retrieve button is clicked
-        btnretrieve.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                // grab a snapshot of comments array in database
-                reff.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.child(String.valueOf(retComment.getText())).exists()) { // comment ID exists
-                            viewComment.setText(snapshot.child(String.valueOf(retComment.getText())).getValue().toString());
-                        } else { // comment ID does not exists
-                            viewComment.setText("Comment ID does not exist");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-        });
-
-
-        /* DELETE AN ITEM */
-        /*  ISSUE:  comment ID can get confusing when deleting a comment from DB. For example,
-                    if you delete comment ID 1 but comment ID 2 exists, we need to find a way
-                    to refill ID 1. Maybe create an array that stores every ID that is empty and check that array when
-                    inserting a new comment before incrementing maxID
-         */
-        // check when retrieve button is clicked
-        btndelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // grab a snapshot of comments array in database
-                reff.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.child(String.valueOf(retComment.getText())).exists()) { // comment ID exists
-                            snapshot.child(String.valueOf(retComment.getText())).getRef().removeValue();
-                            viewComment.setText("Comment removed");
-                        } else { // comment ID does not exists
-                            viewComment.setText("Comment ID does not exist");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

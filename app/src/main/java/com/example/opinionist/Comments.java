@@ -41,7 +41,7 @@ public class Comments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        topics = new ArrayList<>();
+        topics = new ArrayList<Comment>();
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -81,10 +81,26 @@ public class Comments extends AppCompatActivity {
 
         //get topic comments and add them to list of topics.
 
-        newComment.setComment("Comment Test");
-        newComment.setLikes(5);
-
+        newComment.setComment("test");
+        newComment.setLikes(1);
+        //newComment.setLikes((Integer) snapshot.child("1").child("likes").getValue());
         topics.add(newComment);
+
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                newComment.setComment(snapshot.child("1").child("comment").getValue().toString());
+                newComment.setLikes(5);
+                //newComment.setLikes((Integer) snapshot.child("1").child("likes").getValue());
+                topics.add(newComment);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         // Sign out user
         btnLogout = findViewById(R.id.buttonMainLogout);

@@ -23,6 +23,15 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+class LikesComparator implements Comparator<Comment> {
+    @Override
+    public int compare(Comment c1, Comment c2) {
+        return c2.getLikes().compareTo(c1.getLikes());
+    }
+}
 
 public class Comments extends AppCompatActivity {
     EditText subComment, retComment;
@@ -87,11 +96,12 @@ public class Comments extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
-                    if(comment.getParentid() == -1) {
+                    if(comment.getParentid() < 0) {
                         topics.add(comment);
-                        adapter.notifyDataSetChanged();
-                    }
+                   }
+                    Collections.sort(topics, new LikesComparator());
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override

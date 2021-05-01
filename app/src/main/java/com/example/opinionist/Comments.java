@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
 
 public class Comments extends AppCompatActivity {
@@ -81,19 +82,16 @@ public class Comments extends AppCompatActivity {
 
         //get topic comments and add them to list of topics.
 
-        newComment.setComment("test");
-        newComment.setLikes(1);
-        //newComment.setLikes((Integer) snapshot.child("1").child("likes").getValue());
-        topics.add(newComment);
-
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                newComment.setComment(snapshot.child("1").child("comment").getValue().toString());
-                newComment.setLikes(5);
-                //newComment.setLikes((Integer) snapshot.child("1").child("likes").getValue());
-                topics.add(newComment);
-
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Comment comment = child.getValue(Comment.class);
+                    if(comment.getParentid() == -1) {
+                        topics.add(comment);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override

@@ -98,7 +98,9 @@ public class Comments extends AppCompatActivity {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
                         topics.add(comment);
-                   }
+                    } else {
+
+                    }
                     Collections.sort(topics, new LikesComparator());
                 }
                 adapter.notifyDataSetChanged();

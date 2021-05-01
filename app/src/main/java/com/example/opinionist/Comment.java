@@ -26,10 +26,10 @@ public class Comment {
     }
 
     public Integer getParentid() {
-        return likes;
+        return parentid;
     }
 
     public void setParentid(int parentid) {
-        this.likes = likes;
+        this.parentid = parentid;
     }
 }

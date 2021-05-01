@@ -2,6 +2,8 @@ package com.example.opinionist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Comments extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
@@ -27,17 +31,37 @@ public class Comments extends AppCompatActivity {
     TextView viewComment;
     long maxid = 0;
 
+    RecyclerView commentRecycler;
+    Adapter adapter;
+
+    ArrayList<String> items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+
+        items = new ArrayList<>();
+        items.add("First");
+        items.add("Second");
+        items.add("Third");
+
+        commentRecycler = findViewById(R.id.commentRecycler);
+        commentRecycler.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new Adapter(this,items);
+        commentRecycler.setAdapter(adapter);
+
+
+
+
+        commentRecycler = findViewById(R.id.commentRecycler);
 
         /* SEND COMMENT TO SERVER */
         // check connection to firebase server
         Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
 
         // get comment from comment textbox
-        subComment = (EditText) findViewById(R.id.editComment);
+        //subComment = (EditText) findViewById(R.id.editComment);
         newComment = new Comment();
 
         // create new reference to database. all comment instances will fall under 'comments'
@@ -62,7 +86,7 @@ public class Comments extends AppCompatActivity {
         });
 
         // send comment to firebase server when button is clicked
-        btnSubmit = (Button) findViewById(R.id.button);
+       // btnSubmit = (Button) findViewById(R.id.button);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,14 +98,12 @@ public class Comments extends AppCompatActivity {
             }
         });
 
-
-
         /* RETRIEVE DATA */
         // get xml items
-        retComment = (EditText) findViewById(R.id.editRetrieveComment);
-        btnretrieve = (Button) findViewById(R.id.button2);
-        btndelete = (Button) findViewById(R.id.button3);
-        viewComment = (TextView) findViewById(R.id.textViewComment);
+       // retComment = (EditText) findViewById(R.id.editRetrieveComment);
+       // btnretrieve = (Button) findViewById(R.id.button2);
+       // btndelete = (Button) findViewById(R.id.button3);
+       // viewComment = (TextView) findViewById(R.id.textViewComment);
 
         // check when retrieve button is clicked
         btnretrieve.setOnClickListener(new View.OnClickListener() {

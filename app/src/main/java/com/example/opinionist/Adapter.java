@@ -36,6 +36,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = data.get(position);
         holder.textTitle.setText(comment.getComment());
+        holder.textLikes.setText(comment.getLikes().toString());
     }
 
     @Override
@@ -45,10 +46,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
+        TextView textLikes;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
-
+            textLikes = itemView.findViewById(R.id.textLikes);
         }
     }
 

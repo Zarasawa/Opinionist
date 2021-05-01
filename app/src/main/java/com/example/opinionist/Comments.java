@@ -79,6 +79,8 @@ public class Comments extends AppCompatActivity {
             }
         });
 
+        //get topic comments and add them to list of topics.
+
         newComment.setComment("Comment Test");
         newComment.setLikes(5);
 

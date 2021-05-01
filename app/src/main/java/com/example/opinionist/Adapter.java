@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<String> data;
+    private List<Comment> data;
 
-    Adapter(Context context, List<String> data) {
+    Adapter(Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
 
@@ -33,8 +34,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String title = data.get(position);
-        holder.textTitle.setText(title);
+        Comment comment = data.get(position);
+        holder.textTitle.setText(comment.getComment());
     }
 
     @Override

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,18 +34,18 @@ public class Comments extends AppCompatActivity {
 
     RecyclerView commentRecycler;
     Adapter adapter;
-    ArrayList<String> items;
+    ArrayList<Comment> topics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        items = new ArrayList<>();
+        topics = new ArrayList<>();
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,items);
+        adapter = new Adapter(this,topics);
         commentRecycler.setAdapter(adapter);
 
         commentRecycler = findViewById(R.id.commentRecycler);
@@ -78,8 +79,10 @@ public class Comments extends AppCompatActivity {
             }
         });
 
-        items.add("First");
+        newComment.setComment("Comment Test");
+        newComment.setLikes(5);
 
+        topics.add(newComment);
 
         // Sign out user
         btnLogout = findViewById(R.id.buttonMainLogout);

@@ -73,7 +73,7 @@ public class Replies extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
-                    if(comment.getParentid() == 1) {
+                    if(comment.getParentid() == getIntent().getIntExtra("Topic", -2)) {
                         comments.add(comment);
                     }
                     Collections.sort(comments, new LikesComparator());

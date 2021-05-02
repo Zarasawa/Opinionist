@@ -33,13 +33,7 @@ class LikesComparator implements Comparator<Comment> {
     }
 }
 
-interface ItemClickListener{
-
-    public void showReplies(int index);
-
-}
-
-public class Comments extends AppCompatActivity implements ItemClickListener {
+public class Comments extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
@@ -131,12 +125,5 @@ public class Comments extends AppCompatActivity implements ItemClickListener {
                 startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
-    }
-
-    @Override
-    public void showReplies(int index) {
-        Intent i =  new Intent(getApplicationContext(), Replies.class);
-        i.putExtra("Topic",topics.get(index).getParentid());
-        startActivity(i);
     }
 }

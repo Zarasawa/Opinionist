@@ -18,15 +18,12 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    private ItemClickListener itemClickListener;
     private LayoutInflater layoutInflater;
     private List<Comment> data;
 
     Adapter(Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
-        this.itemClickListener = (ItemClickListener) context;
-
     }
 
     @NonNull
@@ -46,7 +43,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             @Override
             public void onClick(View v) {
-                itemClickListener.showReplies(position);
+                //TODO::Find a way to get comment ID here
+                int commentID = 1;
+                v.getContext().startActivity( new Intent(v.getContext(), Replies.class).putExtra("Topic", commentID));
             }
         });
     }

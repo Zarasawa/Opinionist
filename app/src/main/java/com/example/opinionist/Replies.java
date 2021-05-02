@@ -31,7 +31,7 @@ public class Replies extends AppCompatActivity {
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete, btnLogout, btnLogoutBypass;
+    Button btnSubmit, btnretrieve, btndelete, btnBack, btnLogoutBypass;
     TextView viewComment;
     long maxid = 0;
 
@@ -88,20 +88,11 @@ public class Replies extends AppCompatActivity {
         });
 
         // Sign out user
-        btnLogout = findViewById(R.id.buttonMainLogout);
-        mAuth = FirebaseAuth.getInstance();
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnBack = findViewById(R.id.buttonBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( mAuth.getCurrentUser() != null ) {
-                    mAuth.signOut();
-                    startActivity( new Intent(getApplicationContext(), MainActivity.class) );
-                    Toast.makeText(Replies.this, "Logout Successful!",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(Replies.this, "Error: Not logged in", Toast.LENGTH_SHORT).show();
-                }
+                startActivity( new Intent(getApplicationContext(), Comments.class) );
             }
         });
 

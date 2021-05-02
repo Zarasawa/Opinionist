@@ -55,6 +55,7 @@
         android:layout_width="269dp"
         android:layout_height="31dp"
         android:layout_marginStart="28dp"
+        android:paddingStart="10dp"
         android:background="@drawable/round"
         android:ems="10"
         android:hint="Enter a reply here:"

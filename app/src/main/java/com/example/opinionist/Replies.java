@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Replies extends AppCompatActivity {
+public class Replies extends AppCompatActivity implements CommentInterface {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
@@ -49,7 +49,7 @@ public class Replies extends AppCompatActivity {
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AdapterReply(this,comments);
+        adapter = new AdapterReply(this,this,comments);
         commentRecycler.setAdapter(adapter);
 
 
@@ -131,9 +131,14 @@ public class Replies extends AppCompatActivity {
         });
     }
 
-    public void onRepUpClick(View v) {
-        Log.i("Opinionist","upClick");
-
-        //commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
+    @Override
+    public void upvote(Integer id, Integer upvotes) {
+        reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
     }
+
+    @Override
+    public void create_topic(String comment) {
+
+    }
+
 }

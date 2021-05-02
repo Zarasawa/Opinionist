@@ -19,10 +19,12 @@ public class AdapterReply  extends RecyclerView.Adapter<AdapterReply.ViewHolder>
 
     private LayoutInflater layoutInflater;
     private List<Comment> data;
+    private CommentInterface commentInterface;
 
-    AdapterReply(Context context, List<Comment> data) {
+    AdapterReply(CommentInterface upvoteT, Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.commentInterface = upvoteT;
     }
 
     @NonNull
@@ -42,9 +44,10 @@ public class AdapterReply  extends RecyclerView.Adapter<AdapterReply.ViewHolder>
 
             @Override
             public void onClick(View v) {
-               Log.i("Opinionist","upClick");
+               Log.i("Opinionist","uppppClick id=" + comment.getID() + " likes="
+               + comment.getLikes());
 
-                //commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
+                commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
             }
         });
 

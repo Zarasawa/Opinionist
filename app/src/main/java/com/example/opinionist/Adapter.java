@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +21,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
     private List<Comment> data;
+    private upvoteTopic upvoteT;
 
-    Adapter(Context context, List<Comment> data) {
+    Adapter(upvoteTopic upvoteT, Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.upvoteT = upvoteT;
     }
 
     @NonNull
@@ -38,14 +41,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Comment comment = data.get(position);
         holder.textTitle.setText(comment.getComment());
         holder.textLikes.setText(comment.getLikes().toString());
+        holder.buttonUp.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                upvoteT.upvote(comment.getID(), comment.getLikes() + 1);
+            }
+        });
 
         holder.button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                //TODO::Find a way to get comment ID here
-                int commentID = 1;
-                v.getContext().startActivity( new Intent(v.getContext(), Replies.class).putExtra("Topic", commentID));
+                v.getContext().startActivity( new Intent(v.getContext(), Replies.class).putExtra("Topic", comment.getID()));
             }
         });
     }
@@ -59,11 +67,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView textTitle;
         TextView textLikes;
         Button button;
+        Button buttonUp;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textLikes = itemView.findViewById(R.id.textLikes);
             button = itemView.findViewById(R.id.button);
+            buttonUp = itemView.findViewById(R.id.buttonUp);
         }
     }
 

@@ -9,6 +9,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="78dp"
+        android:outlineProvider="none"
+        app:cardBackgroundColor="#A4D3D3"
+        app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,14 +21,30 @@
             android:layout_height="match_parent">
 
             <Button
+                android:id="@+id/buttonUp"
+                android:layout_width="64dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="290dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="160dp"
+                android:layout_marginBottom="16dp"
+                android:text="Up"
+                app:cornerRadius="34dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52" />
+
+            <Button
                 android:id="@+id/button"
-                android:layout_width="wrap_content"
+                android:layout_width="64dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="290dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
-                android:text="Opinions"
+                android:text=">>"
                 app:cornerRadius="34dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +59,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="TextView"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +76,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#006A8075"
+            android:clipToPadding="false">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -33,13 +33,16 @@ class LikesComparator implements Comparator<Comment> {
     }
 }
 
-public class Comments extends AppCompatActivity {
+interface upvoteTopic {
+    public void upvote(Integer id, Integer upvotes);
+}
+
+public class Comments extends AppCompatActivity implements upvoteTopic {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete, btnLogout, btnLogoutBypass;
-    TextView viewComment;
+    Button btnLogout, btnLogoutBypass;
     long maxid = 0;
 
     RecyclerView commentRecycler;
@@ -58,7 +61,7 @@ public class Comments extends AppCompatActivity {
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,topics);
+        adapter = new Adapter(this,this,topics);
         commentRecycler.setAdapter(adapter);
 
 
@@ -66,7 +69,7 @@ public class Comments extends AppCompatActivity {
 
         /* SEND COMMENT TO SERVER */
         // check connection to firebase server
-        Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
 
         // get comment from comment textbox
         //subComment = (EditText) findViewById(R.id.editComment);
@@ -81,6 +84,7 @@ public class Comments extends AppCompatActivity {
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                topics.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
@@ -125,5 +129,10 @@ public class Comments extends AppCompatActivity {
                 startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
+    }
+
+    @Override
+    public void upvote(Integer id, Integer upvotes) {
+        reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
     }
 }

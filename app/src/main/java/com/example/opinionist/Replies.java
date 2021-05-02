@@ -36,19 +36,19 @@ public class Replies extends AppCompatActivity {
     long maxid = 0;
 
     RecyclerView commentRecycler;
-    Adapter adapter;
+    AdapterReply adapter;
     ArrayList<Comment> comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comments);
+        setContentView(R.layout.activity_replies);
 
         comments = new ArrayList<Comment>();
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,comments);
+        adapter = new AdapterReply(this,comments);
         commentRecycler.setAdapter(adapter);
 
 

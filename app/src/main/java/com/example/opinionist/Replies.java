@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -128,5 +129,11 @@ public class Replies extends AppCompatActivity {
                 startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
+    }
+
+    public void onRepUpClick(View v) {
+        Log.i("Opinionist","upClick");
+
+        //commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
     }
 }

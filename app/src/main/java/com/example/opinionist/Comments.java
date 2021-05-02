@@ -33,17 +33,18 @@ class LikesComparator implements Comparator<Comment> {
     }
 }
 
-interface upvoteTopic {
+interface CommentInterface {
     public void upvote(Integer id, Integer upvotes);
+    public void create_topic(String comment);
 }
 
-public class Comments extends AppCompatActivity implements upvoteTopic {
+public class Comments extends AppCompatActivity implements CommentInterface {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
     Button btnLogout, btnLogoutBypass;
-    long maxid = 0;
+    int maxid = 0;
 
     RecyclerView commentRecycler;
     Adapter adapter;
@@ -85,6 +86,7 @@ public class Comments extends AppCompatActivity implements upvoteTopic {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 topics.clear();
+                maxid = (int) snapshot.getChildrenCount();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
@@ -134,5 +136,22 @@ public class Comments extends AppCompatActivity implements upvoteTopic {
     @Override
     public void upvote(Integer id, Integer upvotes) {
         reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+    }
+
+    @Override
+    public void create_topic(String comment) {
+
+        if(comment.length() < 3) {
+            Toast.makeText(Comments.this, "Topic string too short", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Comment topic = new Comment();
+        topic.setComment(comment);
+        topic.setLikes(0);
+        topic.setID(maxid+1);
+        topic.setParentid(-1);
+
+        reff.child(String.valueOf(topic.getID())).setValue(topic);
     }
 }

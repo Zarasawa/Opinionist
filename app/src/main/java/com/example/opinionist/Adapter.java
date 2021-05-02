@@ -21,12 +21,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
     private List<Comment> data;
-    private upvoteTopic upvoteT;
+    private CommentInterface commentInterface;
 
-    Adapter(upvoteTopic upvoteT, Context context, List<Comment> data) {
+    Adapter(CommentInterface upvoteT, Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
-        this.upvoteT = upvoteT;
+        this.commentInterface = upvoteT;
     }
 
     @NonNull
@@ -45,7 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             @Override
             public void onClick(View v) {
-                upvoteT.upvote(comment.getID(), comment.getLikes() + 1);
+                commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
             }
         });
 

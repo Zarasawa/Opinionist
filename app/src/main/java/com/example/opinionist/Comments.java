@@ -43,7 +43,7 @@ public class Comments extends AppCompatActivity implements CommentInterface {
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnLogout, btnLogoutBypass;
+    Button btnLogout, btnLogoutBypass, buttonAdd;
     int maxid = 0;
 
     RecyclerView commentRecycler;
@@ -105,6 +105,17 @@ public class Comments extends AppCompatActivity implements CommentInterface {
             }
         });
 
+        // main menu logout bypass
+        buttonAdd = findViewById(R.id.buttonAdd);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText input = (EditText) findViewById(R.id.editTopic);
+                create_topic(String.valueOf(input.getText()));
+
+            }
+        });
+
         // Sign out user
         btnLogout = findViewById(R.id.buttonMainLogout);
         mAuth = FirebaseAuth.getInstance();
@@ -142,7 +153,12 @@ public class Comments extends AppCompatActivity implements CommentInterface {
     public void create_topic(String comment) {
 
         if(comment.length() < 3) {
-            Toast.makeText(Comments.this, "Topic string too short", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Comments.this, "Topic too short", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(comment.length() > 32) {
+            Toast.makeText(Comments.this, "Topic too long", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -153,5 +169,6 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topic.setParentid(-1);
 
         reff.child(String.valueOf(topic.getID())).setValue(topic);
+
     }
 }

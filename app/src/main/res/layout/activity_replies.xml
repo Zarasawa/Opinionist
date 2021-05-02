@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".Replies">
     android:background="@drawable/purpleart3"
-    tools:context=".Comments">
 
     <Button
-        android:id="@+id/buttonMainLogout"
+        android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="Back"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,15 +28,15 @@
         android:text="logout(login bypass)"
         app:cornerRadius="34dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMainLogout"
+        app:layout_constraintEnd_toStartOf="@+id/buttonBack"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonMainLogout" />
+        app:layout_constraintTop_toTopOf="@+id/buttonBack" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentRecycler"
-        android:layout_width="445dp"
-        android:layout_height="771dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"

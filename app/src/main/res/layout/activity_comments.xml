@@ -7,6 +7,23 @@
     android:background="@drawable/purpleart2"
     tools:context=".Comments">
 
+    <EditText
+        android:id="@+id/editTopic"
+        android:layout_width="300dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round"
+        android:ems="10"
+        android:hint="Enter a new topic here:"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editRegisterPassword"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAdd"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/buttonMainLogout"
         android:layout_width="wrap_content"
@@ -36,16 +53,32 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="96dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCommentsLogoutBypass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTopic">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:text="Add"
+        app:layout_constraintBottom_toTopOf="@+id/commentRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

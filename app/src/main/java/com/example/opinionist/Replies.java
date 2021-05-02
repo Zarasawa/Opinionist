@@ -1,17 +1,18 @@
 package com.example.opinionist;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,32 +21,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Replies extends AppCompatActivity {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete, btnLogout, btnLogoutBypass;
+    Button btnSubmit, btnretrieve, btndelete, btnBack, btnLogoutBypass;
     TextView viewComment;
     long maxid = 0;
 
     RecyclerView commentRecycler;
-    Adapter adapter;
-    ArrayList<Comment> replies;
+    AdapterReply adapter;
+    ArrayList<Comment> comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comments);
+        setContentView(R.layout.activity_replies);
 
-        replies = new ArrayList<Comment>();
+        comments = new ArrayList<Comment>();
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this, replies);
+        adapter = new AdapterReply(this,comments);
         commentRecycler.setAdapter(adapter);
 
 
@@ -70,10 +73,10 @@ public class Replies extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
-                    if(comment.getParentid() == 1) {
-                        replies.add(comment);
+                    if(comment.getParentid() == getIntent().getIntExtra("Topic", -2)) {
+                        comments.add(comment);
                     }
-                    Collections.sort(replies, new LikesComparator());
+                    Collections.sort(comments, new LikesComparator());
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -85,20 +88,11 @@ public class Replies extends AppCompatActivity {
         });
 
         // Sign out user
-        btnLogout = findViewById(R.id.buttonMainLogout);
-        mAuth = FirebaseAuth.getInstance();
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnBack = findViewById(R.id.buttonBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( mAuth.getCurrentUser() != null ) {
-                    mAuth.signOut();
-                    startActivity( new Intent(getApplicationContext(), MainActivity.class) );
-                    Toast.makeText(Replies.this, "Logout Successful!",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(Replies.this, "Error: Not logged in", Toast.LENGTH_SHORT).show();
-                }
+                startActivity( new Intent(getApplicationContext(), Comments.class) );
             }
         });
 
@@ -111,5 +105,4 @@ public class Replies extends AppCompatActivity {
             }
         });
     }
-
 }

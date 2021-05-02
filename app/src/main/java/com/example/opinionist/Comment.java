@@ -1,6 +1,7 @@
 package com.example.opinionist;
 
 public class Comment {
+    private Integer id;
     private String comment;
     private Integer likes;
     private Integer parentid;
@@ -15,6 +16,14 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public Integer getLikes() {

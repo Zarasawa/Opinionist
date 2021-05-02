@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,14 +33,18 @@ class LikesComparator implements Comparator<Comment> {
     }
 }
 
-public class Comments extends AppCompatActivity {
+interface CommentInterface {
+    public void upvote(Integer id, Integer upvotes);
+    public void create_topic(String comment);
+}
+
+public class Comments extends AppCompatActivity implements CommentInterface {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnSubmit, btnretrieve, btndelete, btnLogout, btnLogoutBypass;
-    TextView viewComment;
-    long maxid = 0;
+    Button btnLogout, btnLogoutBypass, buttonAdd;
+    int maxid = 0;
 
     RecyclerView commentRecycler;
     Adapter adapter;
@@ -57,7 +62,7 @@ public class Comments extends AppCompatActivity {
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,topics);
+        adapter = new Adapter(this,this,topics);
         commentRecycler.setAdapter(adapter);
 
 
@@ -65,7 +70,7 @@ public class Comments extends AppCompatActivity {
 
         /* SEND COMMENT TO SERVER */
         // check connection to firebase server
-        Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(Comments.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
 
         // get comment from comment textbox
         //subComment = (EditText) findViewById(R.id.editComment);
@@ -80,10 +85,14 @@ public class Comments extends AppCompatActivity {
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                topics.clear();
+                maxid = (int) snapshot.getChildrenCount();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
                         topics.add(comment);
+                    } else {
+                        comments.add(comment);
                     }
                     Collections.sort(topics, new LikesComparator());
                 }
@@ -92,6 +101,17 @@ public class Comments extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // main menu logout bypass
+        buttonAdd = findViewById(R.id.buttonAdd);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText input = (EditText) findViewById(R.id.editTopic);
+                create_topic(String.valueOf(input.getText()));
 
             }
         });
@@ -124,4 +144,31 @@ public class Comments extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void upvote(Integer id, Integer upvotes) {
+        reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+    }
+
+    @Override
+    public void create_topic(String comment) {
+
+        if(comment.length() < 3) {
+            Toast.makeText(Comments.this, "Topic too short", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(comment.length() > 32) {
+            Toast.makeText(Comments.this, "Topic too long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Comment topic = new Comment();
+        topic.setComment(comment);
+        topic.setLikes(0);
+        topic.setID(maxid+1);
+        topic.setParentid(-1);
+
+        reff.child(String.valueOf(topic.getID())).setValue(topic);
+
+    }
 }

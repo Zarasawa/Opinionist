@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pustwo"
     tools:context=".MainActivity">
 
 
@@ -12,50 +13,52 @@
         android:layout_width="116dp"
         android:layout_height="47dp"
         android:text="Register"
+        app:cornerRadius="34dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintHorizontal_bias="0.759"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonMainLogin"
-        app:layout_constraintVertical_bias="0.002" />
+        app:layout_constraintVertical_bias="0.005" />
 
     <Button
         android:id="@+id/buttonMainComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="94dp"
-        android:layout_marginBottom="356dp"
-        android:text="Comments(login bypass)"
+        android:text="Comments (login bypass)"
+        app:cornerRadius="34dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.667"
+        app:layout_constraintHorizontal_bias="0.572"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMainRegister"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.098" />
 
     <EditText
         android:id="@+id/editTextMainEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_width="240dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/round"
         android:ems="10"
-        android:hint="Email"
+        android:hint="   Email"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextMainPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_width="240dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round"
         android:ems="10"
-        android:hint="Password"
+        android:hint="   Password"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.626"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMainEmail" />
 
@@ -67,10 +70,11 @@
         android:layout_marginTop="12dp"
         android:layout_marginBottom="32dp"
         android:text="Login"
+        app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonMainRegister"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMainPassword"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.072" />
 </androidx.constraintlayout.widget.ConstraintLayout>

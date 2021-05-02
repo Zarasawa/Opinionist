@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,6 +85,8 @@ public class Comments extends AppCompatActivity {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
                         topics.add(comment);
+                    } else {
+                        comments.add(comment);
                     }
                     Collections.sort(topics, new LikesComparator());
                 }
@@ -123,5 +126,4 @@ public class Comments extends AppCompatActivity {
             }
         });
     }
-
 }

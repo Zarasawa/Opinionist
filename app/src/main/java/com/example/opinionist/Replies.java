@@ -33,7 +33,7 @@ public class Replies extends AppCompatActivity {
     Comment newComment;
     Button btnSubmit, btnretrieve, btndelete, btnBack, btnLogoutBypass;
     TextView viewComment;
-    long maxid = 0;
+    int maxid = 0;
 
     RecyclerView commentRecycler;
     AdapterReply adapter;
@@ -69,8 +69,11 @@ public class Replies extends AppCompatActivity {
         //get topic comments and add them to list of topics.
 
         reff.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                maxid = (int) snapshot.getChildrenCount();
+                comments.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() == getIntent().getIntExtra("Topic", -2)) {
@@ -83,6 +86,27 @@ public class Replies extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // reply
+        btnSubmit = findViewById(R.id.buttonReplyAdd);
+        EditText editReply = findViewById(R.id.editReply);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int parentID = getIntent().getIntExtra("Topic", -2);
+                Toast.makeText(Replies.this, "Par id=" + parentID + " maxid=" + maxid, Toast.LENGTH_LONG).show();
+                DatabaseReference reff = FirebaseDatabase.getInstance().getReference("comments");
+
+                Comment topic = new Comment();
+                topic.setComment(String.valueOf(editReply.getText()));
+                topic.setLikes(0);
+                topic.setID(maxid+1);
+                topic.setParentid(parentID);
+
+                reff.child(String.valueOf(topic.getID())).setValue(topic);
 
             }
         });

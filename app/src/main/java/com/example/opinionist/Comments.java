@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,13 @@ class LikesComparator implements Comparator<Comment> {
     }
 }
 
-public class Comments extends AppCompatActivity {
+interface ItemClickListener{
+
+    public void showReplies(int index);
+
+}
+
+public class Comments extends AppCompatActivity implements ItemClickListener {
     EditText subComment, retComment;
     DatabaseReference reff;
     FirebaseAuth mAuth;
@@ -84,6 +91,8 @@ public class Comments extends AppCompatActivity {
                     Comment comment = child.getValue(Comment.class);
                     if(comment.getParentid() < 0) {
                         topics.add(comment);
+                    } else {
+                        comments.add(comment);
                     }
                     Collections.sort(topics, new LikesComparator());
                 }
@@ -124,4 +133,10 @@ public class Comments extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void showReplies(int index) {
+        Intent i =  new Intent(getApplicationContext(), Replies.class);
+        i.putExtra("Topic",topics.get(index).getParentid());
+        startActivity(i);
+    }
 }

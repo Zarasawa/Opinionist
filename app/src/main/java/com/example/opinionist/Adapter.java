@@ -1,9 +1,11 @@
 package com.example.opinionist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +18,14 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
+    private ItemClickListener itemClickListener;
     private LayoutInflater layoutInflater;
     private List<Comment> data;
 
     Adapter(Context context, List<Comment> data) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.itemClickListener = (ItemClickListener) context;
 
     }
 
@@ -37,6 +41,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Comment comment = data.get(position);
         holder.textTitle.setText(comment.getComment());
         holder.textLikes.setText(comment.getLikes().toString());
+
+        holder.button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                itemClickListener.showReplies(position);
+            }
+        });
     }
 
     @Override
@@ -47,10 +59,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
         TextView textLikes;
+        Button button;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textLikes = itemView.findViewById(R.id.textLikes);
+            button = itemView.findViewById(R.id.button);
         }
     }
 

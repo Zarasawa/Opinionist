@@ -44,14 +44,13 @@ public class Comments extends AppCompatActivity implements CommentInterface {
     DatabaseReference reff;
     FirebaseAuth mAuth;
     Comment newComment;
-    Button btnLogout, btnLogoutBypass, buttonAdd;
+    Button btnLogout, buttonAdd;
     int maxid = 0;
 
     RecyclerView commentRecycler;
     Adapter adapter;
     ArrayList<Comment> topics;
     ArrayList<Comment> comments;
-    ArrayList<Comment> swap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +60,10 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topics = new ArrayList<Comment>();
         comments = new ArrayList<Comment>();
 
+
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,this,topics);
+        adapter = new Adapter(this,this, topics);
         commentRecycler.setAdapter(adapter);
 
 
@@ -127,16 +127,14 @@ public class Comments extends AppCompatActivity implements CommentInterface {
                 if( mAuth.getCurrentUser() != null ) {
                     mAuth.signOut();
                     startActivity( new Intent(getApplicationContext(), MainActivity.class) );
-                    Toast.makeText(Comments.this, "Logout Successful!",
-                            Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(Comments.this, "Error: Not logged in", Toast.LENGTH_SHORT).show();
+                    startActivity( new Intent(getApplicationContext(), MainActivity.class) );
                 }
             }
         });
 
-        // main menu logout bypass
+        /** main menu logout bypass
         btnLogoutBypass = findViewById(R.id.buttonCommentsLogoutBypass);
         btnLogoutBypass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +142,7 @@ public class Comments extends AppCompatActivity implements CommentInterface {
                 startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
+         **/
     }
 
     @Override
@@ -170,6 +169,11 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topic.setLikes(0);
         topic.setID(maxid+1);
         topic.setParentid(-1);
+        if(mAuth.getCurrentUser() != null) {
+            topic.setAuthor(mAuth.getCurrentUser().getEmail());
+        } else {
+            topic.setAuthor("Anonymous");
+        }
 
         reff.child(String.valueOf(topic.getID())).setValue(topic);
 

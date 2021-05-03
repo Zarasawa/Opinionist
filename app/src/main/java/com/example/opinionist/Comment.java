@@ -5,8 +5,10 @@ public class Comment {
     private String comment;
     private Integer likes;
     private Integer parentid;
+    private String author;
 
     public Comment() {
+        author = "Anonymous";
         likes = 0;
     }
 
@@ -40,5 +42,13 @@ public class Comment {
 
     public void setParentid(int parentid) {
         this.parentid = parentid;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

@@ -73,7 +73,7 @@ public class Replies extends AppCompatActivity implements CommentInterface {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                maxid = (int) snapshot.getChildrenCount();
+                maxid = 200 + (int) snapshot.getChildrenCount(); // remove 200+ when database is reset
                 comments.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);

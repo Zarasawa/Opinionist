@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +90,7 @@ public class Comments extends AppCompatActivity implements CommentInterface {
                 maxid = (int) snapshot.getChildrenCount();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Comment comment = child.getValue(Comment.class);
+                    Log.i("Opinionist","PID=" + comment.getParentid());
                     if(comment.getParentid() < 0) {
                         topics.add(comment);
                     } else {
@@ -147,6 +149,7 @@ public class Comments extends AppCompatActivity implements CommentInterface {
     @Override
     public void upvote(Integer id, Integer upvotes) {
         reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+        //reff.child(String.valueOf(id)).removeValue();
     }
 
     @Override

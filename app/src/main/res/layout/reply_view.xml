@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="88dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,12 +18,12 @@
 
             <TextView
                 android:id="@+id/textTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_width="296dp"
+                android:layout_height="146dp"
                 android:layout_marginTop="24dp"
                 android:text="TextView"
                 android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/replybuttonUp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,11 +36,21 @@
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/replybuttonUp"
+                android:layout_width="64dp"
+                android:layout_height="0dp"
+                android:text="Up"
+                app:cornerRadius="34dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textTitle" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="203dp">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

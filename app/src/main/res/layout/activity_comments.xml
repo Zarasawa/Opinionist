@@ -17,6 +17,7 @@
         android:background="@drawable/round"
         android:ems="10"
         android:hint="Enter a new topic here:"
+        android:paddingStart="10dp"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/editRegisterPassword"
         app:layout_constraintEnd_toStartOf="@+id/buttonAdd"

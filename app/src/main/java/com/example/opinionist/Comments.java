@@ -61,9 +61,10 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topics = new ArrayList<Comment>();
         comments = new ArrayList<Comment>();
 
+
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,this,topics);
+        adapter = new Adapter(this,this, topics);
         commentRecycler.setAdapter(adapter);
 
 
@@ -170,6 +171,11 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topic.setLikes(0);
         topic.setID(maxid+1);
         topic.setParentid(-1);
+        if(mAuth.getCurrentUser() != null) {
+            topic.setAuthor(mAuth.getCurrentUser().getEmail());
+        } else {
+            topic.setAuthor("Anonymous");
+        }
 
         reff.child(String.valueOf(topic.getID())).setValue(topic);
 

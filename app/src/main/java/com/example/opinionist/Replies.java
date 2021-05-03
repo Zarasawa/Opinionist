@@ -106,9 +106,9 @@ public class Replies extends AppCompatActivity implements CommentInterface {
                 topic.setLikes(0);
                 topic.setID(maxid+1);
                 topic.setParentid(parentID);
+                topic.setAuthor(getIntent().getStringExtra("Username"));
 
                 reff.child(String.valueOf(topic.getID())).setValue(topic);
-                //reff.child(String.valueOf(topic.getID())).removeValue();
 
 
             }

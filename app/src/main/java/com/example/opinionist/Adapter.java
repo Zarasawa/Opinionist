@@ -56,7 +56,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 v.getContext().startActivity( new Intent(v.getContext(), Replies.class)
-                        .putExtra("Topic", comment.getID()));
+                        .putExtra("Topic", comment.getID())
+                        //.putExtra("Username", v.getContext().)
+                );
             }
         });
     }

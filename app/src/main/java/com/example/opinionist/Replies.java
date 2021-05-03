@@ -106,7 +106,12 @@ public class Replies extends AppCompatActivity implements CommentInterface {
                 topic.setLikes(0);
                 topic.setID(maxid+1);
                 topic.setParentid(parentID);
-                topic.setAuthor(getIntent().getStringExtra("Username"));
+                mAuth = FirebaseAuth.getInstance();
+                if(mAuth.getCurrentUser() == null) {
+                    topic.setAuthor("Anonymous");
+                } else {
+                    topic.setAuthor(mAuth.getCurrentUser().getEmail());
+                }
 
                 reff.child(String.valueOf(topic.getID())).setValue(topic);
 
@@ -120,15 +125,6 @@ public class Replies extends AppCompatActivity implements CommentInterface {
             @Override
             public void onClick(View v) {
                 startActivity( new Intent(getApplicationContext(), Comments.class) );
-            }
-        });
-
-        // main menu logout bypass
-        btnLogoutBypass = findViewById(R.id.buttonCommentsLogoutBypass);
-        btnLogoutBypass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), MainActivity.class) );
             }
         });
     }

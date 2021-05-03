@@ -108,6 +108,8 @@ public class Replies extends AppCompatActivity implements CommentInterface {
                 topic.setParentid(parentID);
 
                 reff.child(String.valueOf(topic.getID())).setValue(topic);
+                //reff.child(String.valueOf(topic.getID())).removeValue();
+
 
             }
         });
@@ -134,6 +136,8 @@ public class Replies extends AppCompatActivity implements CommentInterface {
     @Override
     public void upvote(Integer id, Integer upvotes) {
         reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+        //reff.child(String.valueOf(id)).removeValue();
+
     }
 
     @Override

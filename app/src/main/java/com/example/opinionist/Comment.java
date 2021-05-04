@@ -1,11 +1,15 @@
 package com.example.opinionist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Comment {
     private Integer id;
     private String comment;
     private Integer likes;
     private Integer parentid;
     private String author;
+    private ArrayList<String> upvoters;
 
     public Comment() {
         author = "Anonymous";
@@ -50,5 +54,13 @@ public class Comment {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public ArrayList<String> getUpvoters() {
+        return upvoters;
+    }
+
+    public void setUpvoters(ArrayList<String> upvoters) {
+        this.upvoters = upvoters;
     }
 }

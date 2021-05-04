@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterReply  extends RecyclerView.Adapter<AdapterReply.ViewHolder> {
@@ -20,10 +21,12 @@ public class AdapterReply  extends RecyclerView.Adapter<AdapterReply.ViewHolder>
     private LayoutInflater layoutInflater;
     private List<Comment> data;
     private CommentInterface commentInterface;
+    private String user;
 
-    AdapterReply(CommentInterface upvoteT, Context context, List<Comment> data) {
+    AdapterReply(CommentInterface upvoteT, Context context, List<Comment> data, String user) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.user = user;
         this.commentInterface = upvoteT;
     }
 
@@ -45,10 +48,16 @@ public class AdapterReply  extends RecyclerView.Adapter<AdapterReply.ViewHolder>
 
             @Override
             public void onClick(View v) {
-               Log.i("Opinionist","uppppClick id=" + comment.getID() + " likes="
-               + comment.getLikes());
-
-                commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
+                if(!(user.equalsIgnoreCase("Anonymous"))) {
+                    ArrayList<String> upvoters = comment.getUpvoters();
+                    if(!(comment.getUpvoters().contains(user))) {
+                        upvoters.add(user);
+                        commentInterface.upvote(comment.getID(), comment.getLikes() + 1, upvoters);
+                    } else {
+                        upvoters.remove(user);
+                        commentInterface.upvote(comment.getID(), comment.getLikes() - 1, upvoters);
+                    }
+                }
             }
         });
 

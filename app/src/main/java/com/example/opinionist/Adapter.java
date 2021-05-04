@@ -23,10 +23,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Comment> data;
     private CommentInterface commentInterface;
+    private String user;
 
-    Adapter(CommentInterface upvoteT, Context context, List<Comment> data) {
+    Adapter(CommentInterface upvoteT, Context context, List<Comment> data, String user) {
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.user = user;
         this.commentInterface = upvoteT;
     }
 
@@ -47,7 +49,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             @Override
             public void onClick(View v) {
-                commentInterface.upvote(comment.getID(), comment.getLikes() + 1);
+                if(!(user.equalsIgnoreCase("Anonymous"))) {
+                    ArrayList<String> upvoters = comment.getUpvoters();
+                    if(!(comment.getUpvoters().contains(user))) {
+                        upvoters.add(user);
+                        commentInterface.upvote(comment.getID(), comment.getLikes() + 1, upvoters);
+                    } else {
+                        upvoters.remove(user);
+                        commentInterface.upvote(comment.getID(), comment.getLikes() - 1, upvoters);
+                    }
+                }
             }
         });
 

@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 class LikesComparator implements Comparator<Comment> {
     @Override
@@ -35,7 +36,7 @@ class LikesComparator implements Comparator<Comment> {
 }
 
 interface CommentInterface {
-    public void upvote(Integer id, Integer upvotes);
+    public void upvote(Integer id, Integer upvotes, ArrayList<String> upvoters);
     public void create_topic(String comment);
 }
 
@@ -59,11 +60,15 @@ public class Comments extends AppCompatActivity implements CommentInterface {
 
         topics = new ArrayList<Comment>();
         comments = new ArrayList<Comment>();
-
+        mAuth = FirebaseAuth.getInstance();
 
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,this, topics);
+        if(mAuth.getCurrentUser() == null) {
+            adapter = new Adapter(this,this, topics, "Anonymous");
+        } else {
+            adapter = new Adapter(this,this, topics, mAuth.getCurrentUser().getEmail());
+        }
         commentRecycler.setAdapter(adapter);
 
 
@@ -120,7 +125,6 @@ public class Comments extends AppCompatActivity implements CommentInterface {
 
         // Sign out user
         btnLogout = findViewById(R.id.buttonMainLogout);
-        mAuth = FirebaseAuth.getInstance();
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,8 +150,9 @@ public class Comments extends AppCompatActivity implements CommentInterface {
     }
 
     @Override
-    public void upvote(Integer id, Integer upvotes) {
+    public void upvote(Integer id, Integer upvotes, ArrayList<String> upvoters) {
         reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+        reff.child(String.valueOf(id)).child("upvoters").setValue(upvoters);
         //reff.child(String.valueOf(id)).removeValue();
     }
 
@@ -169,6 +174,9 @@ public class Comments extends AppCompatActivity implements CommentInterface {
         topic.setLikes(0);
         topic.setID(maxid+1);
         topic.setParentid(-1);
+        ArrayList<String> empty = new ArrayList<String>();
+        empty.add("");
+        topic.setUpvoters(empty);
         if(mAuth.getCurrentUser() != null) {
             topic.setAuthor(mAuth.getCurrentUser().getEmail());
         } else {

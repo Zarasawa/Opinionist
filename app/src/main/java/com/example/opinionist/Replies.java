@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,10 +47,14 @@ public class Replies extends AppCompatActivity implements CommentInterface {
         setContentView(R.layout.activity_replies);
 
         comments = new ArrayList<Comment>();
-
+        mAuth = FirebaseAuth.getInstance();
         commentRecycler = findViewById(R.id.commentRecycler);
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AdapterReply(this,this,comments);
+        if(mAuth.getCurrentUser() == null) {
+            adapter = new AdapterReply(this,this, comments, "Anonymous");
+        } else {
+            adapter = new AdapterReply(this,this, comments, mAuth.getCurrentUser().getEmail());
+        }
         commentRecycler.setAdapter(adapter);
 
 
@@ -57,8 +62,6 @@ public class Replies extends AppCompatActivity implements CommentInterface {
 
         /* SEND COMMENT TO SERVER */
         // check connection to firebase server
-        Toast.makeText(Replies.this, "Firebase connection success!", Toast.LENGTH_LONG).show();
-
         // get comment from comment textbox
         //subComment = (EditText) findViewById(R.id.editComment);
         newComment = new Comment();
@@ -98,7 +101,7 @@ public class Replies extends AppCompatActivity implements CommentInterface {
             @Override
             public void onClick(View v) {
                 int parentID = getIntent().getIntExtra("Topic", -2);
-                Toast.makeText(Replies.this, "Par id=" + parentID + " maxid=" + maxid, Toast.LENGTH_LONG).show();
+                //Toast.makeText(Replies.this, "Par id=" + parentID + " maxid=" + maxid, Toast.LENGTH_LONG).show();
                 DatabaseReference reff = FirebaseDatabase.getInstance().getReference("comments");
 
                 Comment topic = new Comment();
@@ -106,7 +109,10 @@ public class Replies extends AppCompatActivity implements CommentInterface {
                 topic.setLikes(0);
                 topic.setID(maxid+1);
                 topic.setParentid(parentID);
-                mAuth = FirebaseAuth.getInstance();
+                ArrayList<String> empty = new ArrayList<String>();
+                empty.add("");
+                topic.setUpvoters(empty);
+
                 if(mAuth.getCurrentUser() == null) {
                     topic.setAuthor("Anonymous");
                 } else {
@@ -130,10 +136,10 @@ public class Replies extends AppCompatActivity implements CommentInterface {
     }
 
     @Override
-    public void upvote(Integer id, Integer upvotes) {
+    public void upvote(Integer id, Integer upvotes, ArrayList<String> upvoters) {
         reff.child(String.valueOf(id)).child("likes").setValue(upvotes);
+        reff.child(String.valueOf(id)).child("upvoters").setValue(upvoters);
         //reff.child(String.valueOf(id)).removeValue();
-
     }
 
     @Override
